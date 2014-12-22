@@ -29,7 +29,7 @@ Install `ImageMagick`
 ```javascript
 var cronshot = require('cronshot'),
   middleware = {
-    imagemagick: require('cronshot-imagemagick')
+    'imagemagick': require('cronshot-imagemagick')
   };
 
 // Image Magick Example
@@ -44,28 +44,24 @@ cronshot.startCapturing({
   'url': 'http://sports.yahoo.com',
   // The local path where you would like to save the image
   'path': __dirname,
-  // Our middleware modules
-  'saveMiddleware': {
-    'screenshots': [{
-      // Function that does all the Image Magick stuff
-      'middleware': [middleware.imagemagick],
-      'options': {
-        // The Image Magick commands that you would like to run
-        'gmCommands': [{
-          'method': 'trim',
-          'args': []
-        }, {
-          'method': 'transparent',
-          'args': ['#FFFFFF']
-        }]
-      }
-    }]
-  }
+  // Only takes one screenshot
+  'cronPattern': false,
+  // What middleware functions to use each time a screenshot is taken
+  'saveMiddleware': [{
+    // Function that does all the Image Magick stuff
+    'middleware': middleware.imagemagick,
+    'options': {
+      'gmCommands': [{
+        'method': 'trim',
+        'args': []
+      }, {
+        'method': 'transparent',
+        'args': ['#FFFFFF']
+      }]
+    }
+  }]
 }, function(err) {
   // optional callback function once all screenshots have been taken
-  if (err) {
-      console.error(err);
-  }
 });
 ```
 
@@ -76,6 +72,10 @@ cronshot.startCapturing({
 
 ```javascript
 {
+  // The path where the screenshot will be saved
+  'path': '',
+  // The image name used to save the screenshot
+  'imageName': '',
   // The ImageMagick methods that you would like to be used via the gm node module
   'gmCommands': []
 }
